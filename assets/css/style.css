@@ -1,0 +1,42 @@
+body {
+    background-image: url("../images/StarWars.jpg");
+    color: #cccccc;
+    font-family: 'Press Start 2P', cursive;
+}
+
+img {
+    width: auto;
+    height: 100px;
+    display:block;
+    margin: 0px 10px;
+}
+
+.imgContainer {
+    border: solid grey 3px;
+    width: auto;
+    height: 145px;
+    margin: 10px 0px;
+    background-color: white;
+    float: left;
+    color: black;
+    text-align: center;
+    position: relative;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.imgContainer:hover {
+    border-color: white;
+}
+
+.floatClear {
+    clear: both;
+}
+
+p {
+    clear: both;
+}
+
+h1, h2 {
+    margin: 10px;
+}
