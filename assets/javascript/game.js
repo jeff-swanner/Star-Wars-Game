@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    // Defines Characters
     var char1;
     var char2;
     var char3;
@@ -11,7 +12,8 @@ $(document).ready(function() {
     var defenderSelected;
     var gameOver;
     var APincrement;
-    function reset() {
+    // Function Resets the game to initial state.
+    function reset() { 
         char1 = {
             name: "R2D2",
             HP: 100,        // Health Points
@@ -44,13 +46,14 @@ $(document).ready(function() {
             image: 'assets/images/Jabba.jpeg',
             id: "char4"
         };
-        characters = [char1,char2,char3,char4];
+        characters = [char1,char2,char3,char4]; 
         enemies = [];
         selectedPlayer;
         selectedDefender;
         characterSelected = false;
         defenderSelected = false;
         gameOver = false;
+        // Adds character Divs to selection area of HTML
         $("#characterSelection").empty();
         $("#characterSelection").append(characterImageGen(char1));
         $("#characterSelection").append(characterImageGen(char2));
@@ -60,6 +63,7 @@ $(document).ready(function() {
         $("#enemiesImage").empty();
         $("#defenderImage").empty();
     };
+    // Generates the individiual character div to send to HTML sections
     function characterImageGen(selectedPlayer) {
         var element = $('<div class="imgContainer">');
         element.text(selectedPlayer.name);
@@ -67,18 +71,15 @@ $(document).ready(function() {
         element.append("<img src=" + selectedPlayer.image + ">" + selectedPlayer.HP);
         return element;
     };
+    // returns character object when a div is selected 
     function characterSelector(selectedPlayer) {
-        if (selectedPlayer === "char1") {
-            selectedPlayer = char1;
-        } else if (selectedPlayer === "char2") {
-            selectedPlayer = char2;
-        } else if (selectedPlayer === "char3") {
-            selectedPlayer = char3; 
-        } else if (selectedPlayer === "char4") {
-            selectedPlayer = char4;
-        };
+        var index = characters.findIndex(function(characters) {
+            return characters.id === selectedPlayer;
+        });
+        selectedPlayer = characters[index];
         return selectedPlayer;
     };
+    // Updates enemy array and adds enemies to the HTML section
     function enemyGen() {
         $("#enemiesImage").empty();
         enemies = [];
@@ -94,13 +95,17 @@ $(document).ready(function() {
             $("#enemiesImage").append(characterImageGen(enemies[i]).css("background-color", "red"));
         };
     };
+    // updates HTML if enemy defeated 
     function enemyDefeated(selectedPlayer) {
         $("#defenderImage").empty();
         $("#defenderImage").html("<p>You have defeated " + selectedPlayer.name + ", you can choose to fight another enemy.");
     };
-    reset();
+    // Initial game reset
+    reset(); 
+    // Click event for characters
     $(document).on('click', '.imgContainer', function () {
         if (!gameOver) {
+            // Selects player character and updates HTML, etc
             if (!characterSelected) {
                 $("#characterSelection").empty();
                 selectedPlayer = this.getAttribute("id");
@@ -110,6 +115,7 @@ $(document).ready(function() {
                 characterSelected = true;
                 APincrement = selectedPlayer.AP;
             }
+            // Selects defender character, updates html, etc
             else if (characterSelected && $(this).attr("id") != selectedPlayer.id) {
                 selectedDefender = this.getAttribute("id");
                 selectedDefender = characterSelector(selectedDefender);
@@ -119,12 +125,10 @@ $(document).ready(function() {
             };
         };
     });
-    $("#attack").click(function() {
+    // Monitors attack button and updates character objects, html, etc
+    $(document).on('click', '#attack', function () {
         if (!gameOver) {
             if (defenderSelected) {
-                if (selectedPlayer.HP <= 0) {
-                    selectedPlayer.HP = 0;
-                };
                 if (selectedDefender.HP > 0 && selectedPlayer.HP > 0) {
                     selectedDefender.HP -= selectedPlayer.AP;
                     var defenderDamage = selectedPlayer.AP;
@@ -161,6 +165,7 @@ $(document).ready(function() {
             };
         };
     });
+    // Resets game on click
     $(document).on('click', '#reset', function () {
         reset();
     });
